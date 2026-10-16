@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Falcon IQ Gallery</title>
+<style>
+:root{--bg:#111;--panel:#1a1a1a;--line:#2c2c2c;--text:#eee;--muted:#9a9a9a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{max-width:1200px;margin:0 auto;padding:32px 16px 8px}h1{margin:0;font-size:28px}header p{margin:4px 0 0;color:var(--muted)}
+.car{max-width:1200px;margin:16px auto;padding:0 16px}
+.stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.viewport{height:72vh;overflow:auto}.viewport img{width:100%;display:block}
+.nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:#fff;border:1px solid #444;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer}
+.prev{left:12px}.next{right:12px}
+.cap{display:flex;justify-content:space-between;align-items:center;padding:12px 4px;gap:12px;flex-wrap:wrap}
+.cap b{font-size:18px}.cap span{color:var(--muted)}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.thumbs button{flex:0 0 auto;border:2px solid transparent;border-radius:8px;padding:0;background:none;cursor:pointer;opacity:.6}
+.thumbs button.on{border-color:#ddd;opacity:1}.thumbs img{width:150px;display:block;border-radius:6px}
+</style>
+</head>
+<body>
+<header><h1>Falcon IQ</h1><p>E-commerce analytics dashboard with an AI analyst. Use the arrows, the thumbnails or the ← → keys. Scroll inside a slide to see the full page.</p></header>
+<div class="car">
+  <div class="stage"><div class="viewport" id="vp"><img id="main" alt=""></div>
+    <button class="nav prev" aria-label="Previous">‹</button><button class="nav next" aria-label="Next">›</button></div>
+  <div class="cap"><div><b id="t"></b><br><span id="c"></span></div><span id="n"></span></div>
+  <div class="thumbs" id="th"></div>
+</div>
+<script>
+const S=[["01-overview","Overview","Ads, website and shop in one view, with the daily AI summary"],
+["02-meta-ads","Meta Ads","Spend, delivery, platform split and campaign performance via Zernio"],
+["03-website","Website traffic","Visits, channels, devices and UTM campaigns from TWIPLA"],
+["04-shop","Shop","Orders, revenue, attribution, products and coupons from WooCommerce"],
+["05-integrations","Integrations","Read-only sources plus OpenRouter, Claude Code CLI and ChatGPT Codex CLI"]];
+let i=0;const th=document.getElementById('th');
+S.forEach((s,k)=>{const b=document.createElement('button');b.innerHTML=`<img src="screenshots/${s[0]}-thumb.webp" alt="${s[1]}">`;b.onclick=()=>go(k);th.appendChild(b)});
+function go(k){i=(k+S.length)%S.length;const s=S[i];main.src=`screenshots/${s[0]}.webp`;main.alt=s[1];t.textContent=s[1];c.textContent=s[2];n.textContent=`${i+1} / ${S.length}`;vp.scrollTop=0;[...th.children].forEach((b,j)=>b.classList.toggle('on',j===i))}
+document.querySelector('.prev').onclick=()=>go(i-1);document.querySelector('.next').onclick=()=>go(i+1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')go(i-1);if(e.key==='ArrowRight')go(i+1)});go(0);
+</script>
+</body>
+</html>
